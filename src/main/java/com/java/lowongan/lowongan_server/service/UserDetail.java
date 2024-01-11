@@ -15,6 +15,10 @@ public class UserDetail implements UserDetails {
     private String email;
 
     private String username;
+
+    private String usia;
+
+    private String imgUser;
     @JsonIgnore
     private String password;
 
@@ -22,12 +26,13 @@ public class UserDetail implements UserDetails {
 
 
 
-
-    public UserDetail(Long id, String email, String password ,String username) {
+    public UserDetail(Long id, String email, String password , String username ,String usia, String imgUser) {
         this.id = id;
         this.username = email;
         this.password = password;
         this.username = username;
+        this.usia = usia;
+        this.imgUser = imgUser;
     }
 
     public static UserDetail buildUser(User admin) {
@@ -35,7 +40,9 @@ public class UserDetail implements UserDetails {
                 admin.getId(),
                 admin.getEmail(),
                 admin.getPassword(),
-                admin.getUsername());
+                admin.getUsername(),
+                admin.getImgUser(),
+                admin.getUsia());
 
     }
 
@@ -59,6 +66,22 @@ public class UserDetail implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public String getUsia() {
+        return usia;
+    }
+
+    public void setUsia(String usia) {
+        this.usia = usia;
+    }
+
+    public String getImgUser() {
+        return imgUser;
+    }
+
+    public void setImgUser(String imgUser) {
+        this.imgUser = imgUser;
     }
 
     @Override

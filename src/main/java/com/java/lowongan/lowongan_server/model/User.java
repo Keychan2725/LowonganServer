@@ -29,6 +29,9 @@ public class User {
     @Column(name = "usia"  )
     private  String usia;
 
+    @Column(name = "imgUser")
+    private  String imgUser;
+
    @Column(name = "role")
    private String role;
 
@@ -91,6 +94,16 @@ public class User {
         this.last_login = last_login;
     }
 //
+
+
+    public String getImgUser() {
+        return imgUser;
+    }
+
+    public void setImgUser(String imgUser) {
+        this.imgUser = imgUser;
+    }
+//
 //    public IdentitasUser getIdentitasUser() {
 //        return identitasUser;
 //    }
@@ -98,7 +111,6 @@ public class User {
 //    public void setIdentitasUser(IdentitasUser identitasUser) {
 //        this.identitasUser = identitasUser;
 //    }
-
 
     public String getUsia() {
         return usia;

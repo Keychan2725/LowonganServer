@@ -41,8 +41,7 @@ public class IdentitasUser {
     private String tentangSaya;
 
 
-    @Column(name = "imgUser")
-    private  String imgUser;
+
 
     @ManyToOne
     @MapsId
@@ -55,7 +54,7 @@ public class IdentitasUser {
 
 
 
-    public IdentitasUser(Long id, String namaLengkap, Integer noTelepon, String gender, String agama, Integer usia, String noNik, String noKk ,String alamatRumah, String tentangSaya, String imgUser) {
+    public IdentitasUser(Long id, String namaLengkap, Integer noTelepon, String gender, String agama, Integer usia, String noNik, String noKk ,String alamatRumah, String tentangSaya ) {
         this.id = id;
         this.namaLengkap = namaLengkap;
         this.noTelepon = noTelepon;
@@ -66,7 +65,7 @@ public class IdentitasUser {
         this.noKk = noKk;
         this.alamatRumah = alamatRumah;
         this.tentangSaya = tentangSaya;
-        this.imgUser = imgUser;
+
     }
 
     public Long getId() {
@@ -157,11 +156,5 @@ public class IdentitasUser {
         this.tentangSaya = tentangSaya;
     }
 
-    public String getImgUser() {
-        return imgUser;
-    }
 
-    public void setImgUser(String imgUser) {
-        this.imgUser = imgUser;
-    }
 }
