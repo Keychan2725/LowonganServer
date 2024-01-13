@@ -1,13 +1,13 @@
 package com.java.lowongan.lowongan_server.service;
 
-public class Notifikasi {
+public class Notification {
 
     private String title;
     private String body;
     private Long senderId;
     private Long receiverId;
 
-    public Notifikasi(String title, String body, Long senderId, Long receiverId) {
+    public Notification(String title, String body, Long senderId, Long receiverId) {
         this.title = title;
         this.body = body;
         this.senderId = senderId;

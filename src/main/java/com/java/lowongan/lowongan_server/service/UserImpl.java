@@ -9,6 +9,8 @@ import com.java.lowongan.lowongan_server.model.LoginRequest;
 import com.java.lowongan.lowongan_server.model.User;
 import com.java.lowongan.lowongan_server.repository.UserRepository;
 import com.java.lowongan.lowongan_server.security.JwtUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.google.cloud.storage.StorageOptions;
 import java.io.File;
@@ -26,14 +29,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserImpl implements UserService{
-    private static final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/lowongan-a0c4a.appspot.com/o/%s?alt=media";
 
     @Autowired
     private UserRepository userRepository;
@@ -46,80 +45,90 @@ public class UserImpl implements UserService{
 
     @Autowired
     AuthenticationManager authenticationManager;
-    public String uploadFile(File fileId, String fileName) throws IOException {
-        // Create a temporary file with the specified filename
-        File file = File.createTempFile("user-image-", fileName);
-
-        // Write the file contents to the temporary file
-        // **Replace "your_file_contents" with the actual file contents**
-        byte[] fileContents = "your_file_contents".getBytes();
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(fileContents);
-        }
-
-        // Upload the temporary file to Firebase Storage
-        String downloadURL = uploadFileToFirebaseStorage((MultipartFile) file, fileName);
-
-        // Delete the temporary file
-        file.delete();
-
-        return downloadURL;
-    }
-    public String uploadImage(MultipartFile multipartFile) throws IOException {
-        try {
-            String fileName = getExtentions(multipartFile.getOriginalFilename());
-            String downloadURL = uploadFileToFirebaseStorage(multipartFile, fileName);
-            return downloadURL;
-        } catch (Exception e) {
-            e.getStackTrace();
-            throw new RuntimeException("error");
-        }
-    }
-
-    private String uploadFileToFirebaseStorage(MultipartFile multipartFile, String fileName) throws IOException {
-        // Create a BlobId object with the image data and metadata
-        BlobId blobId = BlobId.of("lowongan-a0c4a.appspot.com", fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-                .setContentType("media")
-                .build();
-
-        // Get the credentials for accessing Firebase Storage
-        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("./src/main/resources/ServiceAccount.json"));
-
-        // Get the Storage service
-        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-
-        // Upload the image data directly from MultipartFile
-        storage.create(blobInfo, multipartFile.getBytes());
-
-        // Generate the download URL for the image
-        return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
-    }
-
-    public String getExtentions(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
-    public String imageConverter(MultipartFile multipartFile) {
-        try {
-            String fileName = getExtentions(multipartFile.getOriginalFilename());
-            File file = convertToFile(multipartFile, fileName);
-            var RESPONSE_URL = uploadFile(file, fileName);
-            file.delete();
-            return RESPONSE_URL;
-        } catch (Exception e) {
-            e.getStackTrace();
-            throw new RuntimeException("error  ");
-        }
-    }
-
-    public File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-        File file = new File(fileName);
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(multipartFile.getBytes());
-            fos.close();
-        }
-        return file;
-    }
+//    public String uploadFile(File fileId, String fileName) throws IOException {
+//        // Create a temporary file with the specified filename
+//        File file = File.createTempFile("user-image-", fileName);
+//
+//        // Write the file contents to the temporary file
+//        // **Replace "your_file_contents" with the actual file contents**
+//        byte[] fileContents = "your_file_contents".getBytes();
+//        try (FileOutputStream fos = new FileOutputStream(file)) {
+//            fos.write(fileContents);
+//        }
+//
+//        // Upload the temporary file to Firebase Storage
+//        String downloadURL = uploadFileToFirebaseStorage((MultipartFile) file, fileName);
+//
+//        // Delete the temporary file
+//        file.delete();
+//
+//        return downloadURL;
+//    }
+//    public String uploadImage(User user, @RequestParam("image") MultipartFile image , UserImpl userImpl) throws IOException {
+//        String fileName = getExtentions(image.getOriginalFilename());
+//
+//        // Validasi format file
+//        if (!Arrays.asList("jpg", "jpeg", "png", "gif", "webp").contains(fileName)) {
+//            throw new RuntimeException("Format file gambar tidak didukung");
+//        }
+//
+//        // Validasi ukuran file
+//        if (image.getSize() > 50_000_000) {
+//            throw new RuntimeException("Ukuran file gambar melebihi batas 50 MB");
+//        }
+//
+//        // Upload file ke Firebase Storage dan dapatkan URL download
+//        String downloadURL = userImpl.uploadFileToFirebaseStorage(image, fileName);
+//
+//        // Update informasi gambar user
+//        user.setImgUser(downloadURL);
+//        userRepository.save(user);
+//
+//        return downloadURL;
+//    }
+//    private String uploadFileToFirebaseStorage(MultipartFile multipartFile, String fileName) throws IOException {
+//        // Create a BlobId object with the image data and metadata
+//        BlobId blobId = BlobId.of("lowongan-a0c4a.appspot.com", fileName);
+//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+//                .setContentType("media")
+//                .build();
+//
+//        // Get the credentials for accessing Firebase Storage
+//        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("./src/main/resources/ServiceAccount.json"));
+//
+//        // Get the Storage service
+//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+//
+//        // Upload the image data directly from MultipartFile
+//        storage.create(blobInfo, multipartFile.getBytes());
+//
+//        // Generate the download URL for the image
+//        return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+//    }
+//    public String getExtentions(String fileName) {
+//        return fileName.substring(fileName.lastIndexOf("."));
+//    }
+//    public String imageConverter(MultipartFile multipartFile) {
+//        try {
+//            String fileName = getExtentions(multipartFile.getOriginalFilename());
+//            File file = convertToFile(multipartFile, fileName);
+//            var RESPONSE_URL = uploadFile(file, fileName);
+//            file.delete();
+//            return RESPONSE_URL;
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//            throw new RuntimeException("error  ");
+//        }
+//    }
+//
+//    public File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
+//        File file = new File(fileName);
+//        try (FileOutputStream fos = new FileOutputStream(file)) {
+//            fos.write(multipartFile.getBytes());
+//            fos.close();
+//        }
+//        return file;
+//    }
 
 
     @Override

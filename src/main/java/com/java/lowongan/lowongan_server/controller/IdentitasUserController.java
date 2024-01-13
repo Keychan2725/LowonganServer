@@ -26,17 +26,17 @@ public class IdentitasUserController {
         return identitasUserService.getIdentitasUserById(id);
     }
 
-    @PostMapping("/identitasUsers/{id}/addData")
+    @PostMapping("/identitasUsers/{id}")
     public IdentitasUser saveIdentitasUser(@RequestBody IdentitasUser identitasUser) {
         return identitasUserService.saveIdentitasUser(identitasUser);
     }
 
-    @PutMapping("/identitasUsers/edit/{id}")
+    @PutMapping("/identitasUsers/{id}")
     public IdentitasUser updateIdentitasUser(@PathVariable Long id, @RequestBody IdentitasUser identitasUser) {
         return identitasUserService.updateIdentitasUser(id, identitasUser);
     }
 
-    @DeleteMapping("/identitasUsers/delete/{id}")
+    @DeleteMapping("/identitasUsers/{id}")
     public void deleteIdentitasUser(@PathVariable Long id) {
         identitasUserService.deleteIdentitasUser(id);
     }

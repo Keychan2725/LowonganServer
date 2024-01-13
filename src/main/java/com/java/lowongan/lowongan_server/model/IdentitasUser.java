@@ -17,16 +17,13 @@ public class IdentitasUser {
     private String namaLengkap;
 
     @Column(name = "no_telepon")
-    private Integer noTelepon;
+    private String noTelepon;
 
     @Column(name = "gender")
     private String gender;
 
     @Column(name = "agama")
     private String agama;
-
-    @Column(name = "usia")
-    private Integer usia;
 
     @Column(name = "no_nik")
     private String noNik;
@@ -54,13 +51,12 @@ public class IdentitasUser {
 
 
 
-    public IdentitasUser(Long id, String namaLengkap, Integer noTelepon, String gender, String agama, Integer usia, String noNik, String noKk ,String alamatRumah, String tentangSaya ) {
+    public IdentitasUser(Long id, String namaLengkap, String noTelepon, String gender, String agama, String noNik, String noKk ,String alamatRumah, String tentangSaya ) {
         this.id = id;
         this.namaLengkap = namaLengkap;
         this.noTelepon = noTelepon;
         this.gender = gender;
         this.agama = agama;
-        this.usia = usia;
         this.noNik = noNik;
         this.noKk = noKk;
         this.alamatRumah = alamatRumah;
@@ -84,11 +80,11 @@ public class IdentitasUser {
         this.namaLengkap = namaLengkap;
     }
 
-    public Integer getNoTelepon() {
+    public String getNoTelepon() {
         return noTelepon;
     }
 
-    public void setNoTelepon(Integer noTelepon) {
+    public void setNoTelepon(String noTelepon) {
         this.noTelepon = noTelepon;
     }
 
@@ -108,13 +104,7 @@ public class IdentitasUser {
         this.agama = agama;
     }
 
-    public Integer getUsia() {
-        return usia;
-    }
 
-    public void setUsia(Integer usia) {
-        this.usia = usia;
-    }
 
     public String getNoNik() {
         return noNik;

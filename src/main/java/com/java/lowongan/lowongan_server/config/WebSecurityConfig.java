@@ -56,8 +56,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             // API controller
             "/api/user/**",
+            "/api/user/all",
+            "/api/user/upload-image/**",
+            "/api/user/delete-image/**",
             "/api/login",
-            "/api/identitasUsers/**"
+            "/api/identitasUsers/**",
+            "/api/identitasUsers/all",
+            "/api/pegawai/**",
+            "/api/pegawai/all",
+            "/api/pekerjaan/**",
+            "/api/pekerjaan/all"
     };
 
 
