@@ -30,6 +30,9 @@ public class Pegawai {
     @Column(name = "permintaanGaji")
     private String permintaanGaji;
 
+    @Column(name = "jumlahPerekrut")
+    private Integer jumlahPerekrut;
+
     @Column(name = "fotoPegawai")
     private String fotoPegawai;
 
@@ -38,7 +41,11 @@ public class Pegawai {
     @JoinColumn(name = "user")
     private User user;
 
-    public Pegawai(Long id, String namaPegawai, String kontakPegawai, String status, String pengalamanBekerja, String alamatPegawai, String permintaanGaji, String fotoPegawai, User user) {
+
+
+    public Pegawai() {
+    }
+    public Pegawai(Long id, String namaPegawai, String kontakPegawai, String status, String pengalamanBekerja, String alamatPegawai,Integer jumlahPerekrut, String permintaanGaji, String fotoPegawai  ,User user) {
         this.id = id;
         this.namaPegawai = namaPegawai;
         this.kontakPegawai = kontakPegawai;
@@ -49,6 +56,7 @@ public class Pegawai {
         this.fotoPegawai = fotoPegawai;
 
         this.user = user;
+        this.jumlahPerekrut = jumlahPerekrut;
     }
 
 
@@ -58,6 +66,10 @@ public class Pegawai {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNamaPegawai() {
+        return namaPegawai;
     }
 
     public void setNamaPegawai(String namaPegawai) {
@@ -110,6 +122,16 @@ public class Pegawai {
 
     public void setFotoPegawai(String fotoPegawai) {
         this.fotoPegawai = fotoPegawai;
+    }
+
+
+
+    public Integer getJumlahPerekrut() {
+        return jumlahPerekrut;
+    }
+
+    public void setJumlahPerekrut(Integer jumlahPerekrut) {
+        this.jumlahPerekrut = jumlahPerekrut;
     }
 
 

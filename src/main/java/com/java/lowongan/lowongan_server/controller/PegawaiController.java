@@ -2,6 +2,9 @@ package com.java.lowongan.lowongan_server.controller;
 
 import com.java.lowongan.lowongan_server.model.Pegawai;
 import com.java.lowongan.lowongan_server.service.PegawaiService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class PegawaiController {
 
+    @Autowired
     private PegawaiService pegawaiService;
 
     public PegawaiController(PegawaiService pegawaiService) {
@@ -32,6 +36,16 @@ public class PegawaiController {
     @PostMapping("/pegawai/{id}")
     public Pegawai save(@RequestBody Pegawai pegawai) {
         return pegawaiService.save(pegawai);
+    }
+
+    @PostMapping("/pegawai/{id}/rekrut")
+    public ResponseEntity<String> rekrutPegawai(@PathVariable Long id) {
+        try {
+            pegawaiService.rekrutPegawai(id);
+            return ResponseEntity.ok("Pegawai berhasil direkrut.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Terjadi kesalahan: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/pegawai/{id}")

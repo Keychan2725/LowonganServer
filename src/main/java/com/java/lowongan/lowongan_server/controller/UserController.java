@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -176,33 +177,39 @@ public class UserController {
 
 
     @DeleteMapping("/user/delete-image/{id}")
-    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) throws IOException {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User tidak ditemukan"));
-        String imageUrl = user.getImgUser();
+    public ResponseEntity<?> deleteImage(@PathVariable("id") Long id) {
+        try {
+            User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User tidak ditemukan"));
+            String imageUrl = user.getImgUser();
 
-        // Hapus file di Firebase Storage
-        if (imageUrl != null) {
-            deleteFileFromFirebaseStorage(imageUrl);
+            if (imageUrl != null) {
+                deleteFileFromFirebaseStorage(imageUrl);
+            }
+
+            user.setImgUser(null);
+            userRepository.save(user);
+
+            return ResponseEntity.ok("Foto berhasil dihapus");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Gagal menghapus foto: " + e.getMessage());
         }
-
-        // Hapus informasi gambar di database
-        user.setImgUser(null);
-        userRepository.save(user);
-
-        return ResponseEntity.ok("Foto berhasil dihapus");
     }
 
-    private void deleteFileFromFirebaseStorage(String imageUrl) throws IOException {
-        Storage storage = StorageOptions.newBuilder()
-                .setCredentials(GoogleCredentials.fromStream(new FileInputStream("./src/main/resources/ServiceAccount.json")))
-                .build()
-                .getService();
+    private void deleteFileFromFirebaseStorage(String imageUrl) {
+        try {
+            Storage storage = StorageOptions.newBuilder()
+                    .setCredentials(GoogleCredentials.fromStream(new FileInputStream("./src/main/resources/ServiceAccount.json")))
+                    .build()
+                    .getService();
 
-        BlobId blobId = BlobId.of("lowongan-a0c4a.appspot.com", extractFileNameFromUrl(imageUrl));
-        boolean deleted = storage.delete(blobId);
+            BlobId blobId = BlobId.of("lowongan-a0c4a.appspot.com", extractFileNameFromUrl(imageUrl));
+            boolean deleted = storage.delete(blobId);
 
-        if (!deleted) {
-            throw new IOException("Gagal menghapus file dari Firebase Storage");
+            if (!deleted) {
+                throw new IOException("Gagal menghapus file dari Firebase Storage");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Gagal menghapus file dari Firebase Storage: " + e.getMessage());
         }
     }
 

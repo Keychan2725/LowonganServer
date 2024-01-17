@@ -1,7 +1,5 @@
 package com.java.lowongan.lowongan_server.model;
 
-import com.java.lowongan.lowongan_server.service.Notification;
-
 import javax.persistence.*;
 
 
@@ -17,7 +15,7 @@ public class Pekerjaan {
     private String namaPekerjaan;
 
     @Column(name = "alamatPekerjaan")
-    private Integer alamatPekerjaan;
+    private String alamatPekerjaan;
 
     @Column(name = "gajiPegawai")
     private String gajiPegawai;
@@ -26,6 +24,8 @@ public class Pekerjaan {
     private String kontakPemilik;
 
 
+    @Column(name = "jumlahPelamar")
+    private Integer jumlahPelamar;
     @Column(name = "tentangPekerjaan")
     private String tentangPekerjaan;
 
@@ -42,7 +42,12 @@ public class Pekerjaan {
     @JoinColumn(name = "user")
     private User user;
 
-    public Pekerjaan(Long id, String namaPekerjaan, Integer alamatPekerjaan, String gajiPegawai, String kontakPemilik, String tentangPekerjaan, String fotoPekerjaan, String status, User user) {
+
+
+    public Pekerjaan(){
+
+    }
+    public Pekerjaan(Long id, String namaPekerjaan, String alamatPekerjaan, String gajiPegawai, String kontakPemilik, Integer jumlahPelamar,String tentangPekerjaan, String fotoPekerjaan, String status, User user) {
         this.id = id;
         this.namaPekerjaan = namaPekerjaan;
         this.alamatPekerjaan = alamatPekerjaan;
@@ -52,6 +57,7 @@ public class Pekerjaan {
         this.fotoPekerjaan = fotoPekerjaan;
         this.status = status;
         this.user = user;
+        this.jumlahPelamar = jumlahPelamar;
     }
 
 
@@ -71,11 +77,11 @@ public class Pekerjaan {
         this.namaPekerjaan = namaPekerjaan;
     }
 
-    public Integer getAlamatPekerjaan() {
+    public String getAlamatPekerjaan() {
         return alamatPekerjaan;
     }
 
-    public void setAlamatPekerjaan(Integer alamatPekerjaan) {
+    public void setAlamatPekerjaan(String alamatPekerjaan) {
         this.alamatPekerjaan = alamatPekerjaan;
     }
 
@@ -119,6 +125,13 @@ public class Pekerjaan {
         this.status = status;
     }
 
+    public Integer getJumlahPelamar() {
+        return jumlahPelamar;
+    }
+
+    public void setJumlahPelamar(Integer jumlahPelamar) {
+        this.jumlahPelamar = jumlahPelamar;
+    }
 
     public User getUser() {
         return user;

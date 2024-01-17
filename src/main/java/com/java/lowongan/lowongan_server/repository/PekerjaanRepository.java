@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PekerjaanRepository extends JpaRepository<Pekerjaan, Long> {
+//    List<Pekerjaan> findByPekerjaanUserId(Long user);
 
 
 }
