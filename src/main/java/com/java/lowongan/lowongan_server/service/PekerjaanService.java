@@ -1,6 +1,5 @@
 package com.java.lowongan.lowongan_server.service;
 
-import com.java.lowongan.lowongan_server.model.Pegawai;
 import com.java.lowongan.lowongan_server.model.Pekerjaan;
 import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import java.util.List;
 public class PekerjaanService {
 
     private final PekerjaanRepository pekerjaanRepository;
+
 
 
     @Transactional

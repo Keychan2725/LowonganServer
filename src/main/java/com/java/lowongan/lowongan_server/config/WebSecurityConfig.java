@@ -62,8 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/login",
             "/api/identitasUsers/**",
             "/api/identitasUsers/all",
-            "/api/pegawai/**",
-            "/api/pegawai/all",
             "/api/pegawai/**/rekrut",
             "/api/pekerjaan/**/rekrut",
             "/api/pekerjaan/**",

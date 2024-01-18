@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
@@ -32,29 +31,51 @@ public class UserImpl implements UserService{
 
     @Override
     public Map<Object, Object> login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new com.java.lowongan.lowongan_server.exception.NotFoundException("Username not found"));
 
-        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new com.java.lowongan.lowongan_server.exception.NotFoundException("Username not found"));
         if (encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateToken(authentication);
-            user.setLast_login(new Date());
-            userRepository.save(user);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedLastLogin = sdf.format(user.getLast_login());
-            Map<Object, Object> response = new HashMap<>();
-            response.put("data", user);
-            response.put("id", user.getId());
-            response.put("token", jwt);
-            response.put("last_login", formattedLastLogin);
-            response.put("type_token", "User");
 
-            return response;
+            // Lakukan validasi dan pengalihan berdasarkan peran
+            return redirectAndValidate(authentication, user);
         }
-        throw new  com.java.lowongan.lowongan_server.exception.NotFoundException("Password not found");
+
+        throw new com.java.lowongan.lowongan_server.exception.NotFoundException("Invalid role or password");
     }
 
+    private Map<Object, Object> redirectAndValidate(Authentication authentication, User user) {
+        String jwt = jwtUtils.generateToken(authentication);
+        user.setLast_login(new Date());
+        userRepository.save(user);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedLastLogin = sdf.format(user.getLast_login());
+
+        Map<Object, Object> response = new HashMap<>();
+        response.put("data", user);
+        response.put("id", user.getId());
+        response.put("token", jwt);
+        response.put("last_login", formattedLastLogin);
+
+        // Lakukan pengalihan berdasarkan peran
+        if (user.getRole().equals("admin")) {
+            response.put("type_token", "Admin");
+            // Lakukan apa yang perlu Anda lakukan untuk dashboard admin
+            // ...
+            response.put("redirect", "/dashboardAdmin");
+        } else if (user.getRole().equals("user")) {
+            response.put("type_token", "User");
+            // Lakukan apa yang perlu Anda lakukan untuk dashboard user
+            // ...
+            response.put("redirect", "/dashboard");
+        } else {
+            throw new com.java.lowongan.lowongan_server.exception.NotFoundException("Invalid role");
+        }
+
+        return response;
+    }
     @Override
     public User addUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
