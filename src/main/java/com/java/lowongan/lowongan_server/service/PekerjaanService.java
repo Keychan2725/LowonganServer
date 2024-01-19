@@ -1,5 +1,6 @@
 package com.java.lowongan.lowongan_server.service;
 
+import com.java.lowongan.lowongan_server.model.IdentitasUser;
 import com.java.lowongan.lowongan_server.model.Pekerjaan;
 import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,21 @@ public class PekerjaanService {
         pekerjaanRepository.save(pekerjaan);
     }
 
+    @Transactional
+    public void editPekerjaan(Long id, Pekerjaan pekerjaan) {
+        Pekerjaan pekerjaanAsli = pekerjaanRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pekerjaan tidak ditemukan dengan ID: " + id));
+
+        pekerjaanAsli.setNamaPekerjaan(pekerjaan.getNamaPekerjaan());
+        pekerjaanAsli.setAlamatPekerjaan(pekerjaan.getAlamatPekerjaan());
+        pekerjaanAsli.setGajiPegawai(pekerjaan.getGajiPegawai());
+        pekerjaanAsli.setEmail(pekerjaan.getEmail());
+        pekerjaanAsli.setTentangPekerjaan(pekerjaan.getTentangPekerjaan());
+        pekerjaanAsli.setFotoPekerjaan(pekerjaan.getFotoPekerjaan());
+        pekerjaanAsli.setStatus(pekerjaan.getStatus());
+
+        pekerjaanRepository.save(pekerjaanAsli);
+    }
 
 
     public PekerjaanService(PekerjaanRepository pekerjaanRepository) {
@@ -45,8 +61,12 @@ public class PekerjaanService {
         return pekerjaanRepository.save(pekerjaan);
     }
 
-    public void delete(Pekerjaan pekerjaan) {
-        pekerjaanRepository.delete(pekerjaan);
+    public void deleteById(Long id) {
+        pekerjaanRepository.deleteById(id);
+    }
+
+    public List<Pekerjaan> findByIdentitasUser(IdentitasUser identitasUser) {
+        return pekerjaanRepository.findByIdentitasUser(identitasUser);
     }
 
 }

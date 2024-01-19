@@ -20,8 +20,8 @@ public class Pekerjaan {
     @Column(name = "gajiPegawai")
     private String gajiPegawai;
 
-    @Column(name = "kontakPemilik")
-    private String kontakPemilik;
+    @Column(name = "email")
+    private String email;
 
 
     @Column(name = "jumlahPelamar")
@@ -37,26 +37,27 @@ public class Pekerjaan {
 
 
 
+
+
     @ManyToOne
-    @MapsId
-    @JoinColumn(name = "user")
-    private User user;
+    private IdentitasUser identitasUser;
 
 
 
     public Pekerjaan(){
 
     }
-    public Pekerjaan(Long id, String namaPekerjaan, String alamatPekerjaan, String gajiPegawai, String kontakPemilik, Integer jumlahPelamar,String tentangPekerjaan, String fotoPekerjaan, String status, User user) {
+
+
+    public Pekerjaan(Long id,String namaPekerjaan, String alamatPekerjaan, String gajiPegawai, Integer jumlahPelamar, String email, String tentangPekerjaan, String fotoPekerjaan, String status) {
         this.id = id;
         this.namaPekerjaan = namaPekerjaan;
         this.alamatPekerjaan = alamatPekerjaan;
         this.gajiPegawai = gajiPegawai;
-        this.kontakPemilik = kontakPemilik;
+        this.email = email;
         this.tentangPekerjaan = tentangPekerjaan;
         this.fotoPekerjaan = fotoPekerjaan;
         this.status = status;
-        this.user = user;
         this.jumlahPelamar = jumlahPelamar;
     }
 
@@ -93,12 +94,13 @@ public class Pekerjaan {
         this.gajiPegawai = gajiPegawai;
     }
 
-    public String getKontakPemilik() {
-        return kontakPemilik;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setKontakPemilik(String kontakPemilik) {
-        this.kontakPemilik = kontakPemilik;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTentangPekerjaan() {
@@ -133,11 +135,11 @@ public class Pekerjaan {
         this.jumlahPelamar = jumlahPelamar;
     }
 
-    public User getUser() {
-        return user;
+    public IdentitasUser getIdentitasUser() {
+        return identitasUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setIdentitasUser(IdentitasUser identitasUser) {
+        this.identitasUser = identitasUser;
     }
 }

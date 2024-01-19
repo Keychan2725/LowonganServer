@@ -23,20 +23,15 @@ public class PekerjaanController {
     }
 
     @GetMapping("/pekerjaan/all")
-    public List<Pekerjaan> findAll() {
-        return pekerjaanService.findAll();
+    public ResponseEntity<List<Pekerjaan>> findAll() {
+        List<Pekerjaan> pekerjaan = pekerjaanService.findAll();
+        return new ResponseEntity<>(pekerjaan, HttpStatus.OK);
     }
-
     @GetMapping("/pekerjaan/{id}")
-    public Pekerjaan findById(@PathVariable Long id) {
-        return pekerjaanService.findById(id);
+    public ResponseEntity<Pekerjaan> findById(@PathVariable Long id) {
+        Pekerjaan pekerjaan = pekerjaanService.findById(id);
+        return new ResponseEntity<>(pekerjaan, HttpStatus.OK);
     }
-
-
-//    @GetMapping("/pekerjaan/user/{userId}")
-//    public List<Pekerjaan> getPekerjaanByUserId(@PathVariable Long user) {
-//        return pekerjaanService.getPekerjaanByUserId(user);
-//    }
 
     @PostMapping("/pekerjaan/{id}/lamar")
     public ResponseEntity<String> melamarPekerjaan(@PathVariable Long id) {
@@ -47,16 +42,23 @@ public class PekerjaanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Terjadi kesalahan: " + e.getMessage());
         }
     }
+    @PutMapping("/pekerjaan/{id}")
+    public ResponseEntity<Pekerjaan> editPekerjaan(@PathVariable Long id, @RequestBody Pekerjaan pekerjaan) {
+        pekerjaanService.editPekerjaan(id, pekerjaan);
+
+        return ResponseEntity.ok(pekerjaan);
+    }
 
 
     @PostMapping("/pekerjaan/{id}")
-    public Pekerjaan save(@RequestBody Pekerjaan pekerjaan) {
-        return pekerjaanService.save(pekerjaan);
+    public ResponseEntity<Pekerjaan> save(@RequestBody Pekerjaan pekerjaan) {
+        Pekerjaan pekerjaanBaru = pekerjaanService.save(pekerjaan);
+        return new ResponseEntity<>(pekerjaanBaru, HttpStatus.CREATED);
     }
-
     @DeleteMapping("/pekerjaan/{id}")
-    public void delete(@PathVariable Long id) {
-        pekerjaanService.delete(pekerjaanService.findById(id));
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        pekerjaanService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

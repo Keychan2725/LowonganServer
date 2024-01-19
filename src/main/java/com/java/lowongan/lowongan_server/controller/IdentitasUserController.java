@@ -26,7 +26,7 @@ public class IdentitasUserController {
         return identitasUserService.getIdentitasUserById(id);
     }
 
-    @PostMapping("/identitasUsers/{id}")
+    @PostMapping("/identitasUsers/add/{id}")
     public IdentitasUser saveIdentitasUser(@RequestBody IdentitasUser identitasUser) {
         return identitasUserService.saveIdentitasUser(identitasUser);
     }

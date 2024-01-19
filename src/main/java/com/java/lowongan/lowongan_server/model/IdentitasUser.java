@@ -38,9 +38,12 @@ public class IdentitasUser {
     private String tentangSaya;
 
 
-
-
     @ManyToOne
+    @JoinColumn(name = "pekerjaan_id")
+    private Pekerjaan pekerjaan;
+
+    @JsonIgnore
+    @OneToOne
     @MapsId
     @JoinColumn(name = "user")
     private User user;

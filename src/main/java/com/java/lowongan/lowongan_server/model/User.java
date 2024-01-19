@@ -40,9 +40,13 @@ public class User {
     @Column(name = "last_login")
     private Date last_login;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private IdentitasUser identitasUser;
+
+
+
+
 
 
     public Long getId() {
@@ -104,13 +108,14 @@ public class User {
         this.imgUser = imgUser;
     }
 //
-//    public IdentitasUser getIdentitasUser() {
-//        return identitasUser;
-//    }
-//
-//    public void setIdentitasUser(IdentitasUser identitasUser) {
-//        this.identitasUser = identitasUser;
-//    }
+    public IdentitasUser getIdentitasUser() {
+        return identitasUser;
+    }
+
+    public void setIdentitasUser(IdentitasUser identitasUser) {
+        this.identitasUser = identitasUser;
+    }
+
 
     public String getUsia() {
         return usia;
