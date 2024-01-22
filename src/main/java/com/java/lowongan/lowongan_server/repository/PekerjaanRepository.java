@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface PekerjaanRepository extends JpaRepository<Pekerjaan, Long> {
 //    List<Pekerjaan> findByPekerjaanUserId(Long user);
-List<Pekerjaan> findByIdentitasUser(IdentitasUser identitasUser);
+
+    List<Pekerjaan> findAllByUserId(Long userId);
+    List<Pekerjaan> findByUserId(Long userId);
 
 
 }

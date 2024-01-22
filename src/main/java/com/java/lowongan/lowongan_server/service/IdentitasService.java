@@ -11,7 +11,9 @@ public interface IdentitasService {
 
     IdentitasUser saveIdentitasUser(IdentitasUser identitasUser);
 
-    IdentitasUser updateIdentitasUser(Long id, IdentitasUser identitasUser);
+    List<IdentitasUser> getIdentitasUsersByUserId(Long userId);
+
+    List<IdentitasUser> updateIdentitasUser(Long userId, IdentitasUser identitasUser);
 
     void deleteIdentitasUser(Long id);
 }

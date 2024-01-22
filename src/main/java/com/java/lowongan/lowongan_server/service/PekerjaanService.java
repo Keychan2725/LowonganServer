@@ -3,6 +3,8 @@ package com.java.lowongan.lowongan_server.service;
 import com.java.lowongan.lowongan_server.model.IdentitasUser;
 import com.java.lowongan.lowongan_server.model.Pekerjaan;
 import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,6 +16,9 @@ public class PekerjaanService {
     private final PekerjaanRepository pekerjaanRepository;
 
 
+    public List<Pekerjaan> findAllByUserId(Long userId) {
+        return pekerjaanRepository.findAllByUserId(userId);
+    }
 
     @Transactional
     public void melamarPekerjaan(Long id) {
@@ -23,6 +28,10 @@ public class PekerjaanService {
         if (pekerjaan.getJumlahPelamar() == null) {
             pekerjaan.setJumlahPelamar(0);
         }
+
+        // Ambil identitas user dari token
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        IdentitasUser identitasUser = (IdentitasUser) authentication.getPrincipal();
         pekerjaan.setJumlahPelamar(pekerjaan.getJumlahPelamar() + 1);
 
         pekerjaanRepository.save(pekerjaan);
@@ -65,8 +74,5 @@ public class PekerjaanService {
         pekerjaanRepository.deleteById(id);
     }
 
-    public List<Pekerjaan> findByIdentitasUser(IdentitasUser identitasUser) {
-        return pekerjaanRepository.findByIdentitasUser(identitasUser);
-    }
 
 }

@@ -9,14 +9,15 @@ import javax.persistence.*;
 @Table(name = "identitas_user")
 public class IdentitasUser {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nama_lengkap")
+    @Column(name = "namaLengkap")
     private String namaLengkap;
 
-    @Column(name = "no_telepon")
+    @Column(name = "noTelepon")
     private String noTelepon;
 
     @Column(name = "gender")
@@ -25,10 +26,10 @@ public class IdentitasUser {
     @Column(name = "agama")
     private String agama;
 
-    @Column(name = "no_nik")
+    @Column(name = "noNik")
     private String noNik;
 
-    @Column(name = "no_kk")
+    @Column(name = "noKk")
     private String noKk;
 
     @Column(name = "alamatRumah")
@@ -38,15 +39,12 @@ public class IdentitasUser {
     private String tentangSaya;
 
 
-    @ManyToOne
-    @JoinColumn(name = "pekerjaan_id")
-    private Pekerjaan pekerjaan;
+    @Column(name = "pekerjaanId")
+    private Long pekerjaanId;
 
-    @JsonIgnore
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user")
-    private User user;
+    @Column(name = "userId")
+    private Long userId;
+
 
     public IdentitasUser() {
 
@@ -125,13 +123,6 @@ public class IdentitasUser {
         this.noKk = noKk;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getAlamatRumah() {
         return alamatRumah;
@@ -149,5 +140,19 @@ public class IdentitasUser {
         this.tentangSaya = tentangSaya;
     }
 
+    public Long getPekerjaanId() {
+        return pekerjaanId;
+    }
 
+    public void setPekerjaanId(Long pekerjaanId) {
+        this.pekerjaanId = pekerjaanId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

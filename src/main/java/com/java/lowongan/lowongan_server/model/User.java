@@ -39,15 +39,9 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Jakarta")
     @Column(name = "last_login")
     private Date last_login;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private IdentitasUser identitasUser;
-
-
-
-
-
+//
+//    @Column(name = "pekerjaanId")
+//    private Long pekerjaanId;
 
     public Long getId() {
         return id;
@@ -107,14 +101,7 @@ public class User {
     public void setImgUser(String imgUser) {
         this.imgUser = imgUser;
     }
-//
-    public IdentitasUser getIdentitasUser() {
-        return identitasUser;
-    }
 
-    public void setIdentitasUser(IdentitasUser identitasUser) {
-        this.identitasUser = identitasUser;
-    }
 
 
     public String getUsia() {

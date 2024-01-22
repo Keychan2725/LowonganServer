@@ -1,6 +1,7 @@
 package com.java.lowongan.lowongan_server.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -22,8 +23,6 @@ public class Pekerjaan {
 
     @Column(name = "email")
     private String email;
-
-
     @Column(name = "jumlahPelamar")
     private Integer jumlahPelamar;
     @Column(name = "tentangPekerjaan")
@@ -35,12 +34,10 @@ public class Pekerjaan {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "userId")
+    private Long userId;
 
 
-
-
-    @ManyToOne
-    private IdentitasUser identitasUser;
 
 
 
@@ -135,11 +132,12 @@ public class Pekerjaan {
         this.jumlahPelamar = jumlahPelamar;
     }
 
-    public IdentitasUser getIdentitasUser() {
-        return identitasUser;
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setIdentitasUser(IdentitasUser identitasUser) {
-        this.identitasUser = identitasUser;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

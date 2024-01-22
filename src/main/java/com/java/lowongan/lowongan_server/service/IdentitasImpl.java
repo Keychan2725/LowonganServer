@@ -1,32 +1,35 @@
 package com.java.lowongan.lowongan_server.service;
 
-import com.google.auth.Credentials;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
 import com.java.lowongan.lowongan_server.model.IdentitasUser;
 import com.java.lowongan.lowongan_server.repository.IdentitasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class IdentitasImpl implements IdentitasService {
 
 
-
     @Autowired
     private IdentitasRepository identitasUserRepository;
+
+    private final IdentitasRepository identitasRepository;
+
+    @Autowired
+    public IdentitasImpl(IdentitasRepository identitasRepository) {
+        this.identitasRepository = identitasRepository;
+    }
+
+    @Override
+    public List<IdentitasUser> getIdentitasUsersByUserId(Long userId) {
+        return identitasRepository.findByUserId(userId);
+    }
+
+
+
+
 
     @Override
     public List<IdentitasUser> getAllIdentitasUsers() {
@@ -45,17 +48,44 @@ public class IdentitasImpl implements IdentitasService {
 
 
 
-    @Override
-    public IdentitasUser updateIdentitasUser(Long id, IdentitasUser identitasUser) {
-        Optional<IdentitasUser> existingIdentitasUser = identitasUserRepository.findById(id);
-        if (existingIdentitasUser.isPresent()) {
-            identitasUser.setId(id);
-            return identitasUserRepository.save(identitasUser);
-        }
-        return null;
-    }
 
     @Override
+    public List<IdentitasUser> updateIdentitasUser(Long userId, @RequestBody IdentitasUser newData) {
+        List<IdentitasUser> existingData = identitasUserRepository.findByUserId(userId);
+        for (IdentitasUser data : existingData) {
+            // Lakukan pembaruan data hanya jika nilai baru tidak null
+            if (newData.getNamaLengkap() != null) {
+                data.setNamaLengkap(newData.getNamaLengkap());
+            }
+            if (newData.getAgama() != null) {
+                data.setAgama(newData.getAgama());
+            }
+            if (newData.getNoTelepon() != null) {
+                data.setNoTelepon(newData.getNoTelepon());
+            }
+            if (newData.getNoKk() != null) {
+                data.setNoKk(newData.getNoKk());
+            }
+            if (newData.getGender() != null) {
+                data.setGender(newData.getGender());
+            }
+            if (newData.getNoNik() != null) {
+                data.setNoNik(newData.getNoNik());
+            }
+            if (newData.getAlamatRumah() != null) {
+                data.setAlamatRumah(newData.getAlamatRumah());
+            }
+            if (newData.getTentangSaya() != null) {
+                data.setTentangSaya(newData.getTentangSaya());
+            }
+        }
+
+        return identitasUserRepository.saveAll(existingData);
+    }
+
+
+
+@Override
     public void deleteIdentitasUser(Long id) {
         identitasUserRepository.deleteById(id);
     }

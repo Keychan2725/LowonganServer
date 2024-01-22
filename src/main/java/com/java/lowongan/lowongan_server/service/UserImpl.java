@@ -25,6 +25,7 @@ public class UserImpl implements UserService{
     @Autowired
     PasswordEncoder encoder;
 
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -93,6 +94,15 @@ public class UserImpl implements UserService{
         return userRepository.save(user);
     }
 
+
+    public Long getUserIdByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getId();
+        } else {
+            throw new RuntimeException("User not found for username: " + username);
+        }
+    }
     @Override
     public User addAdmin(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -108,6 +118,7 @@ public class UserImpl implements UserService{
     public User get(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new   com.java.lowongan.lowongan_server.exception.NotFoundException("Id Not Found"));
     }
+
 
     @Override
     public List<User> getAll() {
