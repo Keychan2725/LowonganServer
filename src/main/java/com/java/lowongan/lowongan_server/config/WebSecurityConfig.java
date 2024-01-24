@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/login",
             "/api/identitasUsers/**",
             "/api/identitasUsers/all",
+            "/api/identitasUsers/update-pekerjaan",
             "/api/identitasUsers/add/**",
             "/api/identitasUsers/edit/**",
             "/api/pegawai/**/rekrut",
@@ -73,7 +74,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/pekerjaan/all",
             "/api/pekerjaan/add",
             "/api/pekerjaan/lamar/*",
-            "/api/pekerjaan/user/**"
+            "/api/pekerjaan/user/**",
+            "/api/pelamar/add",
+            "/api/pelamar/edit/**",
+            "/api/pelamar/all",
+            "/api/pelamar/getBy/**",
+            "/api/pelamar/byUserId/**",
+            "/api/pelamar/byId/**",
+            "/api/pelamar/**"
     };
 
 

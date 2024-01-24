@@ -17,15 +17,15 @@ public class IdentitasImpl implements IdentitasService {
 
     private final IdentitasRepository identitasRepository;
 
+
+
+
+
     @Autowired
     public IdentitasImpl(IdentitasRepository identitasRepository) {
         this.identitasRepository = identitasRepository;
     }
 
-    @Override
-    public List<IdentitasUser> getIdentitasUsersByUserId(Long userId) {
-        return identitasRepository.findByUserId(userId);
-    }
 
 
 
@@ -36,10 +36,7 @@ public class IdentitasImpl implements IdentitasService {
         return identitasUserRepository.findAll();
     }
 
-    @Override
-    public IdentitasUser getIdentitasUserById(Long id) {
-        return identitasUserRepository.findById(id).orElse(null);
-    }
+
 
     @Override
     public IdentitasUser saveIdentitasUser(IdentitasUser identitasUser) {

@@ -1,6 +1,9 @@
 package com.java.lowongan.lowongan_server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -31,6 +34,10 @@ public class Pekerjaan {
     @Column(name = "fotoPekerjaan")
     private String fotoPekerjaan;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Jakarta")
+    @Column(name = "tanggalPost")
+    private Date tanggalPost;
     @Column(name = "status")
     private String status;
 
@@ -46,7 +53,7 @@ public class Pekerjaan {
     }
 
 
-    public Pekerjaan(Long id,String namaPekerjaan, String alamatPekerjaan, String gajiPegawai, Integer jumlahPelamar, String email, String tentangPekerjaan, String fotoPekerjaan, String status) {
+    public Pekerjaan(Long id, String namaPekerjaan,  String alamatPekerjaan, String gajiPegawai, Integer jumlahPelamar, String email, String tentangPekerjaan, String fotoPekerjaan, String status) {
         this.id = id;
         this.namaPekerjaan = namaPekerjaan;
         this.alamatPekerjaan = alamatPekerjaan;
@@ -132,6 +139,13 @@ public class Pekerjaan {
         this.jumlahPelamar = jumlahPelamar;
     }
 
+    public Date getTanggalPost() {
+        return tanggalPost;
+    }
+
+    public void setTanggalPost(Date tanggalPost) {
+        this.tanggalPost = tanggalPost;
+    }
 
     public Long getUserId() {
         return userId;

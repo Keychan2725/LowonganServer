@@ -1,13 +1,18 @@
 package com.java.lowongan.lowongan_server.controller;
 
+import com.java.lowongan.lowongan_server.exception.NotFoundException;
 import com.java.lowongan.lowongan_server.model.IdentitasUser;
 
+import com.java.lowongan.lowongan_server.model.Pelamar;
+import com.java.lowongan.lowongan_server.repository.IdentitasRepository;
+import com.java.lowongan.lowongan_server.service.IdentitasImpl;
 import com.java.lowongan.lowongan_server.service.IdentitasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -15,7 +20,11 @@ import java.util.List;
 public class IdentitasUserController {
 
     @Autowired
-    private IdentitasService identitasUserService;
+    private IdentitasImpl identitasUserService;
+
+    @Autowired
+    IdentitasRepository identitasRepository;
+
 
 
     @GetMapping("/identitasUsers/allUser")
@@ -24,10 +33,11 @@ public class IdentitasUserController {
     }
 
     @GetMapping("/identitasUsers/{userId}")
-    public ResponseEntity<List<IdentitasUser>> getIdentitasUsersByUserId(@PathVariable Long userId) {
-        List<IdentitasUser> identitasUsers = identitasUserService.getIdentitasUsersByUserId(userId);
-        return ResponseEntity.ok(identitasUsers);
+    public ResponseEntity<List<IdentitasUser>> getByUserId(@PathVariable("userId") Long userId) {
+        List<IdentitasUser> identitasUserList = identitasRepository.findByUserId(userId);
+        return ResponseEntity.ok(identitasUserList);
     }
+
 
     @PostMapping("/identitasUsers/add")
     public IdentitasUser saveIdentitasUser(@RequestBody IdentitasUser identitasUser) {

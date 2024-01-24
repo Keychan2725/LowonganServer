@@ -12,6 +12,7 @@ import com.java.lowongan.lowongan_server.model.User;
 import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
 import com.java.lowongan.lowongan_server.service.PekerjaanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -85,6 +87,7 @@ public class PekerjaanController {
 
     @PostMapping("/pekerjaan/add")
     public ResponseEntity<Pekerjaan> save(@RequestBody Pekerjaan pekerjaan) {
+        pekerjaan.setTanggalPost(new Date());
         Pekerjaan pekerjaanBaru = pekerjaanService.save(pekerjaan);
         return new ResponseEntity<>(pekerjaanBaru, HttpStatus.CREATED);
     }
@@ -94,7 +97,7 @@ public class PekerjaanController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/pekerjaan/upload-image/{id}")
+    @PutMapping("/pekerjaan/upload-image/{id}")
     public ResponseEntity<?> uploadImage(@PathVariable("id") Long id, @RequestParam("image") MultipartFile image) throws IOException {
         Pekerjaan user = pekerjaanRepository.findById(id).orElseThrow(() -> new NotFoundException("Pekerjaan tidak ditemukan"));
 
@@ -103,6 +106,8 @@ public class PekerjaanController {
 
         // Update informasi gambar user
         user.setFotoPekerjaan(downloadURL);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
         pekerjaanRepository.save(user);
 
         return ResponseEntity.ok(downloadURL);
