@@ -2,6 +2,7 @@ package com.java.lowongan.lowongan_server.service;
 
 import com.java.lowongan.lowongan_server.model.IdentitasUser;
 import com.java.lowongan.lowongan_server.model.Pekerjaan;
+import com.java.lowongan.lowongan_server.model.Pelamar;
 import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PekerjaanService {
@@ -16,26 +18,20 @@ public class PekerjaanService {
     private final PekerjaanRepository pekerjaanRepository;
 
 
+
     public List<Pekerjaan> findAllByUserId(Long userId) {
         return pekerjaanRepository.findAllByUserId(userId);
     }
-
-    @Transactional
-    public void melamarPekerjaan(Long id) {
-        Pekerjaan pekerjaan = pekerjaanRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pegawai tidak ditemukan dengan ID: " + id));
-
-        if (pekerjaan.getJumlahPelamar() == null) {
-            pekerjaan.setJumlahPelamar(0);
-        }
-
-        // Ambil identitas user dari token
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        IdentitasUser identitasUser = (IdentitasUser) authentication.getPrincipal();
-        pekerjaan.setJumlahPelamar(pekerjaan.getJumlahPelamar() + 1);
-
-        pekerjaanRepository.save(pekerjaan);
+     public List<Pekerjaan> findByUserId(Long userId) {
+        return pekerjaanRepository.findByUserId(userId);
     }
+
+
+    public Optional<Pekerjaan> findByUserIdAndId(Long userId, Long id) {
+        return pekerjaanRepository.findByUserIdAndId(userId, id);
+    }
+
+
 
     @Transactional
     public void editPekerjaan(Long id, Pekerjaan pekerjaan) {
@@ -48,10 +44,10 @@ public class PekerjaanService {
         pekerjaanAsli.setEmail(pekerjaan.getEmail());
         pekerjaanAsli.setTentangPekerjaan(pekerjaan.getTentangPekerjaan());
         pekerjaanAsli.setFotoPekerjaan(pekerjaan.getFotoPekerjaan());
-        pekerjaanAsli.setStatus(pekerjaan.getStatus());
 
         pekerjaanRepository.save(pekerjaanAsli);
     }
+
 
 
     public PekerjaanService(PekerjaanRepository pekerjaanRepository) {

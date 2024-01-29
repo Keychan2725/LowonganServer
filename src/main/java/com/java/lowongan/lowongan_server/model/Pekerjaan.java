@@ -26,8 +26,7 @@ public class Pekerjaan {
 
     @Column(name = "email")
     private String email;
-    @Column(name = "jumlahPelamar")
-    private Integer jumlahPelamar;
+
     @Column(name = "tentangPekerjaan")
     private String tentangPekerjaan;
 
@@ -38,22 +37,16 @@ public class Pekerjaan {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Jakarta")
     @Column(name = "tanggalPost")
     private Date tanggalPost;
-    @Column(name = "status")
-    private String status;
 
     @Column(name = "userId")
     private Long userId;
-
-
-
-
 
     public Pekerjaan(){
 
     }
 
 
-    public Pekerjaan(Long id, String namaPekerjaan,  String alamatPekerjaan, String gajiPegawai, Integer jumlahPelamar, String email, String tentangPekerjaan, String fotoPekerjaan, String status) {
+    public Pekerjaan(Long id, String namaPekerjaan,  String alamatPekerjaan, String gajiPegawai,  String email, String tentangPekerjaan, String fotoPekerjaan) {
         this.id = id;
         this.namaPekerjaan = namaPekerjaan;
         this.alamatPekerjaan = alamatPekerjaan;
@@ -61,8 +54,6 @@ public class Pekerjaan {
         this.email = email;
         this.tentangPekerjaan = tentangPekerjaan;
         this.fotoPekerjaan = fotoPekerjaan;
-        this.status = status;
-        this.jumlahPelamar = jumlahPelamar;
     }
 
 
@@ -121,22 +112,6 @@ public class Pekerjaan {
 
     public void setFotoPekerjaan(String fotoPekerjaan) {
         this.fotoPekerjaan = fotoPekerjaan;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getJumlahPelamar() {
-        return jumlahPelamar;
-    }
-
-    public void setJumlahPelamar(Integer jumlahPelamar) {
-        this.jumlahPelamar = jumlahPelamar;
     }
 
     public Date getTanggalPost() {

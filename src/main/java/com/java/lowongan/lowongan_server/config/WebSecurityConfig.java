@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 
 @Configuration
@@ -34,6 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthEntryPointJwt unauthorizedHandler;
 
+
+
+
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -44,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(adminDetailsService).passwordEncoder(passwordEncoder());
     }
+
 
 
     private static final String[] AUTH_WHITELIST = {
@@ -69,26 +76,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/pekerjaan/**/rekrut",
             "/api/pekerjaan/**",
             "/api/pekerjaan/user/**",
-            "/api/pekerjaan/upload-image/**",
+            "/api/pekerjaan/**/uploadImage",
             "/api/pekerjaan/lamar",
             "/api/pekerjaan/all",
             "/api/pekerjaan/add",
             "/api/pekerjaan/lamar/*",
+            "/api/pekerjaan/pelamar/*",
+            "/api/pekerjaan/getBy/**",
+            "/api/pekerjaan/pelamar/**",
+            "/api/pekerjaan/user/**/id//**",
             "/api/pekerjaan/user/**",
             "/api/pelamar/add",
             "/api/pelamar/edit/**",
+            "/api/pelamar/terima/**",
+            "/api/pelamar/tolak/**",
+            "/api/pelamar/batal/**",
             "/api/pelamar/all",
             "/api/pelamar/getBy/**",
-            "/api/pelamar/byUserId/**",
+            "/api/pelamar/user/**",
             "/api/pelamar/byId/**",
+            "/api/pekerjaan/**/pelamar/**",
             "/api/pelamar/**"
     };
+
 
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 
     @Bean
@@ -107,6 +128,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 
 }

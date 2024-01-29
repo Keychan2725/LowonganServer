@@ -1,20 +1,18 @@
 package com.java.lowongan.lowongan_server.service;
 
 import com.java.lowongan.lowongan_server.exception.NotFoundException;
-import com.java.lowongan.lowongan_server.model.IdentitasUser;
 import com.java.lowongan.lowongan_server.model.Pekerjaan;
 import com.java.lowongan.lowongan_server.model.Pelamar;
+import com.java.lowongan.lowongan_server.repository.PekerjaanRepository;
 import com.java.lowongan.lowongan_server.repository.PelamarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -34,6 +32,9 @@ public class PelamarService {
         return ResponseEntity.ok(pelamar);
     }
 
+    public List<Pelamar> getPelamarByPekerjaanId(Long pekerjaanId) {
+        return pelamarRepository.findByPekerjaanId(pekerjaanId);
+    }
 
 
     @Transactional
@@ -49,6 +50,18 @@ public class PelamarService {
         pelamarRepository.save(pelamar);
         return ResponseEntity.ok(pelamar);
     }
+  @Transactional
+    public ResponseEntity<Pelamar> UpdateStatusById( @PathVariable("id") Long id  ,@RequestBody Pelamar pelamar ) {
+        Pelamar pelamarr = pelamarRepository.findById(id).orElseThrow(() -> new NotFoundException("Pelamar not found with ID: " + id));
+
+
+
+        pelamarr.setStatus(pelamar.getStatus());
+        pelamarRepository.save(pelamar);
+        return ResponseEntity.ok(pelamar);
+    }
+
+
 
 
 

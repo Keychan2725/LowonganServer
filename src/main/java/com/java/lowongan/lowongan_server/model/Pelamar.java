@@ -34,6 +34,8 @@ public class Pelamar {
     @Column(name = "pekerjaanId")
     private Long pekerjaanId;
 
+
+
     public Pelamar() {
 
     }
